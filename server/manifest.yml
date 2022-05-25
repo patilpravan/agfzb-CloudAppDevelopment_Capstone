@@ -1,11 +1,11 @@
   applications:
-  - name: djangoapp
+  - name: pravandjangoapp
     routes:
-      - route: $HOST.$DOMAIN
+      - route: pravansapp.mybluemix.net
     memory: 128M
     buildpack: python_buildpack
-  - name: djangoapp-nginx
+  - name: pravandjangoapp-nginx
     routes:
-      - route: $HOST.$DOMAIN/static
+      - route: pravansapp.mybluemix.net/static
     memory: 128M
     buildpack: staticfile_buildpack
