@@ -58,21 +58,22 @@ class CarModel(models.Model):
 
 class CarDealer:
 
-    def __init__(self, address, city, id, lat, long, st, zip):
+    def __init__(self, address, city, full_name, id, lat, long, short_name, st, state, zip):
         # Dealer address
         self.address = address
         # Dealer city
         self.city = city
-       
+        self.full_name = full_name
         # Dealer id
         self.id = id
         # Location lat
         self.lat = lat
         # Location long
         self.long = long
-
+        self.short_name = short_name
         # Dealer state
         self.st = st
+        self.state = state
         # Dealer zip
         self.zip = zip
 
@@ -81,47 +82,18 @@ class CarDealer:
 
 
 class DealerReview:
-
-    def __init__(self, dealership, name, purchase, review):
-        # Required attributes
+    def __init__(self, dealership, id, name, purchase, review, car_make=None, car_model=None, car_year=None, purchase_date=None, sentiment="neutral"):
+        self.car_make = car_make
+        self.car_model = car_model
+        self.car_year = car_year
         self.dealership = dealership
-        self.name = name
-        self.purchase = purchase
-        self.review = review
-        # Optional attributes
-        self.purchase_date = ""
-        self.purchase_make = ""
-        self.purchase_model = ""
-        self.purchase_year = ""
-        self.sentiment = ""
-        self.id = ""
+        self.id = id  # The id of the review
+        self.name = name  # Name of the reviewer
+        self.purchase = purchase  # Did the reviewer purchase the car? bool
+        self.purchase_date = purchase_date
+        self.review = review  # The actual review text
+        self.sentiment = sentiment  # Watson NLU sentiment analysis of review
 
     def __str__(self):
-        return "Review: " + self.review
+        return "Reviewer: " + self.name + " Review: " + self.review
 
-    def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__,
-                            sort_keys=True, indent=4)
-
-
-class ReviewPost:
-
-    def __init__(self, dealership, name, purchase, review):
-        self.dealership = dealership
-        self.name = name
-        self.purchase = purchase
-        self.review = review
-        self.purchase_date = ""
-        self.car_make = ""
-        self.car_model = ""
-        self.car_year = ""
-
-    def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__,
-                            sort_keys=True, indent=4)
-
-
-# <HINT> Create a plain Python class `CarDealer` to hold dealer data
-
-
-# <HINT> Create a plain Python class `DealerReview` to hold review data
