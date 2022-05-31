@@ -3,6 +3,10 @@ import json
 # import related models here
 from requests.auth import HTTPBasicAuth
 from .models import CarDealer, DealerReview
+from ibm_watson import NaturalLanguageUnderstandingV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
+import time
 
 # Create a `get_request` to make HTTP GET requests
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
@@ -62,6 +66,7 @@ def get_dealers_from_cf(url, **kwargs):
     # Call get_request with a URL parameter
     json_result = get_request(url)
     if json_result:
+        print("inside if Pr: ",json_result)
         # Get the row list in JSON as dealers
         dealerdict= json_result["body"]
         dealers=[]

@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-# from .restapis import related methods
+# from .restapis import related method
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -94,17 +94,20 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review'
+        print("pravanreviews: inside getdeler details if")
+        #url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review'
+        url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review?id=15'
         reviews = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
         context = {
             "reviews":  reviews,
             "dealership": dealer_id
         }
+        print("pravanreviews: ",context)
         # for every review, convert the string purchase into a boolean
         for review in reviews:
             review.purchase = review.purchase == "True"
         return render(request, 'djangoapp/dealer_details.html', context)
-
+"""
 def add_review(request, dealer_id):
     context = {}
     review = dict()
@@ -139,3 +142,5 @@ def add_review(request, dealer_id):
             post_request(url, review, dealerId=dealer_id)
 
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+
+"""
