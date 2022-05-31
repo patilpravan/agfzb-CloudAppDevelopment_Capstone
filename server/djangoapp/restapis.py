@@ -110,7 +110,7 @@ def get_dealer_reviews_from_cf(url, dealer_id):
     results = []
     print("pravan32d:", dealer_id,"url: ",url)
     # Perform a GET request with the specified dealer id
-    json_result = get_request(url, dealerId=dealer_id)
+    json_result = get_request(url, id=dealer_id)
     print("pravan32 :",json_result)
     if json_result:
         # Get all review data from the response
@@ -157,6 +157,7 @@ def get_dealer_reviews_from_cf(url, dealer_id):
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
+"""
 def analyze_review_sentiments(review):
     api_key = "9c6MgdyqFNXXxMSVDnXQHwayUxyPgronOPR2uAJpgxPT"
     url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/1733dd8b-f1ee-45e4-8cc4-4322fff19e07"
@@ -182,5 +183,33 @@ def analyze_review_sentiments(review):
     sentimentresult = sentiment_label
 
     return sentimentresult
+"""
+def analyze_review_sentiments(review):
+    api_key = "PAneXSS0k6Kvl2m6z5TAMfn5XwCUaoChbRDijT5Yr-e_"
+    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/1733dd8b-f1ee-45e4-8cc4-4322fff19e07"
+    text = review
+   # print("pranalyze: ",text)
+    version = '2020-08-01'
+    authenticator = IAMAuthenticator(api_key)
+    natural_language_understanding = NaturalLanguageUnderstandingV1(
+        version=version,
+        authenticator=authenticator
+    )
+    natural_language_understanding.set_service_url(url)
+    try:
+        print("pranalyzetry: ")
+        response = natural_language_understanding.analyze(text=text, features=Features(
+            sentiment=SentimentOptions())).get_result()
+        print(json.dumps(response))
+        print("pranalyzetry: 2")
+        # sentiment_score = str(response["sentiment"]["document"]["score"])
+        sentiment_label = response["sentiment"]["document"]["label"]
+    except:
+        print("Review is too short for sentiment analysis. Assigning default sentiment value 'neutral' instead")
+        sentiment_label = "neutral"
+    # print(sentiment_score)
+    # print(sentiment_label)
+    sentimentresult = sentiment_label
 
+    return sentimentresult
 

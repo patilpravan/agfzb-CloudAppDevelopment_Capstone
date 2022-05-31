@@ -95,8 +95,8 @@ def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
         print("pravanreviews: inside getdeler details if")
-        #url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review'
-        url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review?id=15'
+        url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review'
+        #url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review?id=13'
         reviews = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
         context = {
             "reviews":  reviews,
