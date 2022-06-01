@@ -43,16 +43,19 @@
             </div>
         </div>
     </nav>
-    <!-- Add reviews as cards -->
     
-   
-
+    <!-- Add reviews as cards -->
+    {% if user.is_authenticated %}
+           <a class="btn btn-outline-primary mx-5 my-5" href="{% url 'djangoapp:add_review' dealership %}">Add Review</a>
+           {% else %}
+           <a class="btn btn-outline-primary mx-5 my-5" href="{% url 'djangoapp:registration' %}">Sign up to Review</a>
+    {% endif %}
 
     <div class="card-columns mx-5 my-2">
         {% for review in reviews %}
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">{{ review.name }}</h5>
+                    <h5 class="card-title">{{ review.name }}</h5><br>
                     {% if review.purchase %}
                         <h6 class="card-title">Purchased a {{ review.car_make }} {{ review.car_model }} on {{ review.purchase_date }}</h6>
                     {% else %}
@@ -69,9 +72,13 @@
                 <div class="card-body">
                     <div class="card-text">Customer Remarks: {{ review.review }}</div>
                 </div>
+                <div class="card-body">
+                    <div class="card-text"> {{ review.car_year }}</div>
+                </div>
             </div>
         {% endfor %}
     </div>
+    
     </body>
 
 </html>

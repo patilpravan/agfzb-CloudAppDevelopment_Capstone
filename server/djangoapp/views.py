@@ -106,8 +106,9 @@ def get_dealer_details(request, dealer_id):
         # for every review, convert the string purchase into a boolean
         for review in reviews:
             review.purchase = review.purchase == "True"
+   
         return render(request, 'djangoapp/dealer_details.html', context)
-"""
+
 def add_review(request, dealer_id):
     context = {}
     review = dict()
@@ -132,15 +133,65 @@ def add_review(request, dealer_id):
             review['review']["car_year"] = request.POST["car_year"] or "N/A"
             userr = User.objects.get(username=request.user)
             review['review']['id'] = userr.id
-            review['review']["name"] = userr.first_name + " " + userr.last_name
-
-            url = "https://eda3f908.eu-gb.apigw.appdomain.cloud/api/review"
+            review['review']["name"] = request.POST["name"] or "N/A"
+            url = "https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review"
 
             #json_payload = {}
             #json_payload['review'] = review
 
-            post_request(url, review, dealerId=dealer_id)
+            post_request(url, review, id=dealer_id)
 
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
 
+
 """
+def add_review(request, dealer_id):
+    print("w4addreview")
+    context = {} 
+    url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review'
+        #url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review?id=13'
+    reviews = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
+    context = {
+        "reviews":  reviews,
+        "dealership": dealer_id
+    }
+    print("w4addreview2")
+    for review in reviews:
+            review.purchase = review.purchase == "True"
+    return render(request, 'djangoapp/dealer_details.html', context)
+ 
+    if request.method == "GET":
+        print("w4addreview3")
+        # Get dealer details from the API
+        context = {
+            "cars": CarModel.objects.all(),
+            "dealer_id": dealer_id
+        }
+        print("w4addreview: ",context)
+        return render(request, 'djangoapp/add_review.html', context)
+    print("w4addreview5")
+    if request.method == "POST":
+        print("w4addreview6")
+        if request.user.is_authenticated:
+            review['review'] = {}
+            review['review']["time"] = datetime.utcnow().isoformat()
+            review['review']["dealership"] = dealer_id
+            review['review']["review"] = request.POST["review"]
+            review['review']["purchase"] = request.POST["purchase"]
+            review['review']['purchase_date'] = request.POST['purchase_date'] or "N/A"
+            review['review']["car_model"] = request.POST["car_model"] or "N/A"
+            review['review']["car_make"] = request.POST["car_make"] or "N/A"
+            review['review']["car_year"] = request.POST["car_year"] or "N/A"
+            userr = User.objects.get(username=request.user)
+            review['review']['id'] = userr.id
+            review['review']["name"] = userr.first_name + " " + userr.last_name
+
+            url = 'https://fb22f0f1.us-south.apigw.appdomain.cloud/api/review'
+
+            #json_payload = {}
+            #json_payload['review'] = review
+
+            post_request(url, review, id=dealer_id)
+    
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+    """

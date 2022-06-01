@@ -31,7 +31,8 @@ class CarMake(models.Model):
 class CarModel(models.Model):
     id = models.IntegerField(default=1,primary_key=True)
     name = models.CharField(null=False, max_length=100, default='Car')
-   
+    dealer_id = models.IntegerField(null=True)
+    
     SEDAN = 'Sedan'
     SUV = 'SUV'
     WAGON = 'Wagon'
